@@ -22,9 +22,13 @@ const useCountry = (name) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}${name}`);
-      const data = await response.data;
-      setCountry(data[0]);
+      try {
+        const response = await axios.get(`${baseUrl}${name}`);
+        const data = await response.data;
+        setCountry(data[0]);
+      } catch (e) {
+        setCountry({});
+      }
     };
     if (name) {
       fetchData();
@@ -39,7 +43,7 @@ const Country = ({ country }) => {
     return null;
   }
 
-  if (!country.name) {
+  if (!country?.name) {
     return <div>not found...</div>;
   }
 
