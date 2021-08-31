@@ -10,7 +10,6 @@ import {
 import {
   asyncFailure,
   asyncSuccess,
-  selectNotis,
 } from '../reducers/notificationReducer';
 import { selectUser } from '../reducers/userReducer';
 
@@ -18,7 +17,6 @@ function Home() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const { notification, success } = useSelector(selectNotis);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -58,11 +56,6 @@ function Home() {
       ) : (
         <>
           <h2>blogs</h2>
-          {notification && (
-            <p className={`${success ? 'notification' : 'error'}`}>
-              {notification}
-            </p>
-          )}
           {createFormOrButton}
           <Blogs />
         </>
