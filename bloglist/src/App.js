@@ -1,34 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import AddBlog from './components/addBlog';
-import LoginForm from './components/loginForm';
+import React, { useEffect } from 'react';
 import { setToken } from './services/blogs';
+import { useDispatch } from 'react-redux';
+import { setUser } from './reducers/userReducer';
+import Home from './pages/Home';
 import {
-  asyncSuccess,
-  asyncFailure,
-  selectNotis,
-} from './reducers/notificationReducer';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  asyncAddBlog,
-  initializeBlogs,
-} from './reducers/blogsReducer';
-import {
-  selectUser,
-  setUser,
-  removeUser,
-} from './reducers/userReducer';
-import Blogs from './components/Blogs';
+  BrowserRouter as Router,
+  Route,
+  Switch,
+} from 'react-router-dom';
+import Users from './components/Users';
+import Menu from './components/Menu';
+import User from './pages/User';
 
 const App = () => {
-  const [showCreateForm, setShowCreateForm] = useState(false);
   const dispatch = useDispatch();
-  const { notification, success } = useSelector(selectNotis);
-  const user = useSelector(selectUser);
-
-  useEffect(() => {
-    dispatch(initializeBlogs());
-  }, [dispatch]);
-
   useEffect(() => {
     const loggedInUser =
       window.localStorage.getItem('loggedBlogAppUser') || null;
@@ -39,61 +24,22 @@ const App = () => {
     }
   }, []);
 
-  const createBlog = async (newObject) => {
-    try {
-      dispatch(asyncAddBlog(newObject));
-      dispatch(
-        asyncSuccess(
-          `A new blog ${newObject.title} by ${newObject.author} added`
-        )
-      );
-    } catch (e) {
-      dispatch(asyncFailure(e.message));
-    }
-  };
-
   return (
     <div className="container">
-      {user === null ? (
-        <LoginForm />
-      ) : (
-        <>
-          <h2>blogs</h2>
-          {notification && (
-            <p className={`${success ? 'notification' : 'error'}`}>
-              {notification}
-            </p>
-          )}
-          <p>
-            {user.name} logged-in{' '}
-            <button
-              onClick={() => {
-                window.localStorage.removeItem('loggedBlogAppUser');
-                dispatch(removeUser());
-              }}
-              className="btn"
-              id="logout"
-            >
-              Log out
-            </button>
-          </p>
-          {showCreateForm ? (
-            <AddBlog
-              hideCreateForm={() => setShowCreateForm(false)}
-              createBlog={createBlog}
-            />
-          ) : (
-            <button
-              onClick={() => setShowCreateForm(true)}
-              className="btn"
-              id="show-create-blog"
-            >
-              Create new blog
-            </button>
-          )}
-          <Blogs />
-        </>
-      )}
+      <Router>
+        <Menu />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/users">
+            <Users />
+          </Route>
+          <Route path="/users/:id">
+            <User />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 };
