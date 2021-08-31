@@ -4,10 +4,11 @@ import {
   asyncFailure,
   selectNotis,
 } from '../reducers/notificationReducer';
+import { setUser } from '../reducers/userReducer';
 import { setToken } from '../services/blogs';
 import { login } from '../services/login';
 
-export default function LoginForm({ setUser }) {
+export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { notification, success } = useSelector(selectNotis);
@@ -24,8 +25,8 @@ export default function LoginForm({ setUser }) {
         'loggedBlogAppUser',
         JSON.stringify(user)
       );
+      dispatch(setUser(user));
       setToken(user.token);
-      setUser(user);
       setUsername('');
       setPassword('');
     } catch (e) {
