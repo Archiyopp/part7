@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
   asyncLikeBlog,
   asyncRemoveBlog,
+  commentBlog,
   selectBlogs,
 } from '../reducers/blogsReducer';
 import {
@@ -13,6 +14,7 @@ import {
 import { selectUser } from '../reducers/userReducer';
 
 export default function Blog() {
+  const [comment, setComment] = useState('');
   const { id } = useParams();
   const dispatch = useDispatch();
   const blogs = useSelector(selectBlogs);
@@ -20,8 +22,10 @@ export default function Blog() {
     return null;
   }
   const user = useSelector(selectUser);
+
   const blog = blogs.find((blog) => blog.id === id);
   const { title, author, url, likes, user: blogUser } = blog;
+
   const likeBlog = async () => {
     const newBlog = {
       title,
@@ -36,6 +40,7 @@ export default function Blog() {
       console.error(e.message);
     }
   };
+
   const deleteBlog = async () => {
     const confirm = window.confirm(
       'Are you sure you want to delete this post?'
@@ -53,6 +58,13 @@ export default function Blog() {
       }
     }
   };
+
+  const addComment = async () => {
+    let comments = blog.comments || [];
+    comments = [...comments, comment];
+    dispatch(commentBlog(id, comments));
+    setComment('');
+  };
   return (
     <div className="blog">
       <h2>{title}</h2>
@@ -68,6 +80,14 @@ export default function Blog() {
         remove
       </button>
       <h3>Comments</h3>
+      <p>
+        <input
+          type="text"
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button onClick={addComment}>add comment</button>
+      </p>
       <ul>
         {blog.comments &&
           blog.comments.map((comment, index) => (

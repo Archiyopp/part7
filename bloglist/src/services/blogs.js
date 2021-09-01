@@ -22,6 +22,13 @@ export const update = (id, newObject) => {
   return request.then((response) => response.data);
 };
 
+export const postComment = async (id, comments) => {
+  const response = await axios.post(`${baseUrl}/${id}/comments`, {
+    comments,
+  });
+  return response.data;
+};
+
 export const remove = async (id) => {
   const config = {
     headers: {
