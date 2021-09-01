@@ -1,3 +1,4 @@
+import { List, ListItemText, Paper } from '@material-ui/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -13,12 +14,13 @@ export default function User() {
   return (
     <div>
       <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
+      <h3>Added blogs</h3>
+
+      <List component={Paper}>
         {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
+          <ListItemText key={blog.id} primary={blog.title} />
         ))}
-      </ul>
+      </List>
     </div>
   );
 }

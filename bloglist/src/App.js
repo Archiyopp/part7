@@ -13,6 +13,8 @@ import Menu from './components/Menu';
 import User from './pages/User';
 import Blog from './pages/Blog';
 import { selectNotis } from './reducers/notificationReducer';
+import { Container } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,13 +30,13 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container">
+    <Container>
       <Router>
         <Menu />
         {notification && (
-          <p className={`${success ? 'notification' : 'error'}`}>
+          <Alert severity={`${success ? 'success' : 'error'}`}>
             {notification}
-          </p>
+          </Alert>
         )}
         <Switch>
           <Route exact path="/">
@@ -51,7 +53,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Container>
   );
 };
 

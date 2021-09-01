@@ -1,3 +1,5 @@
+import { ListItemText } from '@material-ui/core';
+import { Button, List } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -65,20 +67,32 @@ export default function Blog() {
     dispatch(commentBlog(id, comments));
     setComment('');
   };
+  const style = { fontSize: '20px', marginRight: '5px' };
   return (
     <div className="blog">
       <h2>{title}</h2>
-      <p>{url}</p>
-      <p>
+      <p style={style}>{url}</p>
+      <p style={style}>
         likes {likes}{' '}
-        <button className="btn like-btn" onClick={likeBlog}>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ backgroundColor: 'green', marginLeft: '10px' }}
+          onClick={likeBlog}
+        >
           like
-        </button>
+        </Button>
       </p>
-      <p>added by {author}</p>
-      <button onClick={deleteBlog} className="btn" id="remove-btn">
+      <p style={style}>added by {author}</p>
+      <Button
+        onClick={deleteBlog}
+        className="btn"
+        id="remove-btn"
+        color="secondary"
+        variant="contained"
+      >
         remove
-      </button>
+      </Button>
       <h3>Comments</h3>
       <p>
         <input
@@ -86,14 +100,21 @@ export default function Blog() {
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         />
-        <button onClick={addComment}>add comment</button>
+        <Button
+          onClick={addComment}
+          variant="outline"
+          color="primary"
+          style={{ marginLeft: '10px' }}
+        >
+          add comment
+        </Button>
       </p>
-      <ul>
+      <List>
         {blog.comments &&
           blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
+            <ListItemText key={index}>{comment}</ListItemText>
           ))}
-      </ul>
+      </List>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -44,28 +46,34 @@ export default function LoginForm() {
       )}
       <form onSubmit={handleLogin}>
         <div>
-          username{' '}
-          <input
+          <TextField
             type="text"
             value={username}
             id="username"
             name="username"
+            label="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-          password{' '}
-          <input
+          <TextField
             type="password"
             id="password"
             value={password}
             name="password"
+            label="password"
             onChange={({ target }) => setPassword(target.value)}
           />{' '}
         </div>{' '}
-        <button type="submit" id="login-btn">
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          id="login-btn"
+          style={{ marginTop: '5px' }}
+        >
           login
-        </button>{' '}
+        </Button>
       </form>
     </>
   );
