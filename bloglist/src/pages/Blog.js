@@ -22,7 +22,6 @@ export default function Blog() {
   const user = useSelector(selectUser);
   const blog = blogs.find((blog) => blog.id === id);
   const { title, author, url, likes, user: blogUser } = blog;
-  console.log(blog);
   const likeBlog = async () => {
     const newBlog = {
       title,
@@ -68,6 +67,13 @@ export default function Blog() {
       <button onClick={deleteBlog} className="btn" id="remove-btn">
         remove
       </button>
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments &&
+          blog.comments.map((comment, index) => (
+            <li key={index}>{comment}</li>
+          ))}
+      </ul>
     </div>
   );
 }
